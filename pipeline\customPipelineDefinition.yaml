@@ -1,0 +1,27 @@
+---
+Name: sample-app-pipeline
+Plugins:
+- medusa-shared-lib-2
+Pipeline:
+  CI:
+    - Build:
+        Steps:
+          - buildApp
+    - Unit-Test:
+        Steps:
+          - unitTestApp
+  CD:
+    When:
+      - Branch:
+          - main
+          - master
+    Phases:
+      - Deploy-Dev:
+          Environment: dev
+          Steps:
+            - deployApp
+      - Deploy-Prod:
+          Environment: prod
+          Steps:
+            - promptForDeployment
+            - deployApp
